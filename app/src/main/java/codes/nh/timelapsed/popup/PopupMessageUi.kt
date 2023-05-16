@@ -1,4 +1,4 @@
-package codes.nh.timelapsed.utils
+package codes.nh.timelapsed.popup
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -20,12 +20,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PopupMessage(
-    message: String?,
-    onSwipeDown: (Float) -> Unit = {},
+    state: PopupMessageState,
     modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
-        visible = message != null,
+        visible = state.getMessage() != null,
         enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
         exit = fadeOut() + slideOutVertically(targetOffsetY = { it / 2 }),
         modifier = modifier
@@ -39,13 +38,13 @@ fun PopupMessage(
                 .fillMaxWidth()
                 .draggable(
                     state = rememberDraggableState(
-                        onDelta = { px -> if (px > 0) onSwipeDown(px) }
+                        onDelta = { px -> if (px > 15) state.hideMessage() }
                     ),
                     orientation = Orientation.Vertical
                 )
         ) {
             Text(
-                text = message ?: "",
+                text = state.getMessage() ?: "",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(16.dp)
             )
