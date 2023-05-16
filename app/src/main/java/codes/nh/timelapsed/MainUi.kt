@@ -208,6 +208,7 @@ fun Main(
                 val popupMessage = mainViewModel.getPopupMessage()
                 PopupMessage(
                     message = popupMessage,
+                    onSwipeDown = { px -> if (px > 15) mainViewModel.hidePopupMessage() },
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .padding(8.dp)

@@ -16,7 +16,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     //screen
 
-     val sheetState = SheetState(
+    val sheetState = SheetState(
         skipPartiallyExpanded = true,
         initialValue = SheetValue.Hidden
     )
@@ -30,7 +30,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     suspend fun closeScreen() {
-        if(getScreen() == null) return
+        if (getScreen() == null) return
         sheetState.hide()
         activeScreen.value = null
     }
@@ -47,7 +47,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val activePopupMessage = mutableStateOf(null as String?)
 
-    fun showPopupMessage(message: String, time: Long = 2500L) {
+    fun showPopupMessage(message: String, time: Long = 3000L) {
         activePopupMessage.value = message
         viewModelScope.launch {
             delay(time)
@@ -57,7 +57,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun hidePopupMessage() {
+    fun hidePopupMessage() {
         activePopupMessage.value = null
     }
 
