@@ -2,7 +2,9 @@ package codes.nh.timelapsed.image
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.util.LruCache
+import androidx.exifinterface.media.ExifInterface
 import codes.nh.timelapsed.utils.log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -29,16 +31,12 @@ class ImageLoader(cacheSizePercent: Double = 25.0) {
         val options = BitmapFactory.Options().apply {
             inSampleSize = sampleSize
         }
-        BitmapFactory.decodeFile(file.path, options)
-        /*
+        val bitmap = BitmapFactory.decodeFile(file.path, options)
         val exif = ExifInterface(file)
         val rotation = exif.rotationDegrees.toFloat()
-        if (rotation != 0f) {
-            val matrix = Matrix().apply { postRotate(rotation) }
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-        }
-        bitmap
-        */
+        if (rotation == 0f) return@withContext bitmap
+        val matrix = Matrix().apply { postRotate(rotation) }
+        Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
     suspend fun load(file: File, sampleSize: Int): Bitmap {
