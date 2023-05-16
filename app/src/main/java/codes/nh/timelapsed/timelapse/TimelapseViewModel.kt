@@ -33,22 +33,18 @@ class TimelapseViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun isTimelapseListLoaded() = timelapseListLoadedState.value
 
-    fun createTimelapse(name: String) {
-        viewModelScope.launch {
-            val timelapse = timelapseManager.createTimelapse(name)
-            if (timelapse != null) {
-                timelapseListState.add(timelapse)
-            }
-        }
+    suspend fun createTimelapse(name: String): Boolean {
+        val timelapse = timelapseManager.createTimelapse(name)
+        if (timelapse == null) return false
+        timelapseListState.add(timelapse)
+        return true
     }
 
-    fun deleteTimelapse(timelapse: Timelapse) {
-        viewModelScope.launch {
-            val success = timelapseManager.deleteTimelapse(timelapse)
-            if (success) {
-                timelapseListState.remove(timelapse)
-            }
-        }
+    suspend fun deleteTimelapse(timelapse: Timelapse): Boolean {
+        val success = timelapseManager.deleteTimelapse(timelapse)
+        if (!success) return false
+        timelapseListState.remove(timelapse)
+        return true
     }
 
     //repeating camera activity

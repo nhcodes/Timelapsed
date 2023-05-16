@@ -101,8 +101,12 @@ fun Main(
                                 CreateTimelapseScreen(
                                     onCreate = { name ->
                                         coroutineScope.launch { mainViewModel.closeScreen() }
-                                        timelapseViewModel.createTimelapse(name)
-                                        mainViewModel.showPopupMessage("Timelapse $name created")
+                                        coroutineScope.launch {
+                                            val success = timelapseViewModel.createTimelapse(name)
+                                            val message = if (success) "Timelapse $name created"
+                                            else "Error while creating timelapse $name"
+                                            mainViewModel.showPopupMessage(message)
+                                        }
                                     }
                                 )
                             }
@@ -113,9 +117,14 @@ fun Main(
                                     timelapse = timelapse,
                                     onDelete = {
                                         coroutineScope.launch { mainViewModel.closeScreen() }
-                                        timelapseViewModel.deleteTimelapse(timelapse)
-                                        val name = timelapse.directory.name
-                                        mainViewModel.showPopupMessage("Timelapse $name deleted")
+                                        coroutineScope.launch {
+                                            val success =
+                                                timelapseViewModel.deleteTimelapse(timelapse)
+                                            val name = timelapse.directory.name
+                                            val message = if (success) "Timelapse $name deleted"
+                                            else "Error while deleting timelapse $name"
+                                            mainViewModel.showPopupMessage(message)
+                                        }
                                     }
                                 )
                             }
