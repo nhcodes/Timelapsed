@@ -1,4 +1,4 @@
-package codes.nh.timelapsed.utils
+package codes.nh.timelapsed.image
 
 import androidx.compose.foundation.Image
 import androidx.compose.material3.LocalContentColor

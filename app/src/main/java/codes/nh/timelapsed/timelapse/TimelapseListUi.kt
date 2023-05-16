@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import codes.nh.timelapsed.utils.AsyncImage
+import codes.nh.timelapsed.image.AsyncImage
 import codes.nh.timelapsed.utils.getTestTimelapses
 
 @Composable

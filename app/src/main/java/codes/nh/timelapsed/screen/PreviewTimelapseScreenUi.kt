@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import codes.nh.timelapsed.timelapse.Timelapse
-import codes.nh.timelapsed.utils.AsyncImage
+import codes.nh.timelapsed.image.AsyncImage
 import codes.nh.timelapsed.utils.getTestTimelapses
 
 @Composable

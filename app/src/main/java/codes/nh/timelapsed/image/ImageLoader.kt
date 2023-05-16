@@ -1,8 +1,9 @@
-package codes.nh.timelapsed.utils
+package codes.nh.timelapsed.image
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.LruCache
+import codes.nh.timelapsed.utils.log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
