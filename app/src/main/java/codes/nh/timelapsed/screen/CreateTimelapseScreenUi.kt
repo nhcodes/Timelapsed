@@ -17,9 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CreateTimelapseScreen(onCreate: (String) -> Unit, onDismiss: () -> Unit) {
+fun CreateTimelapseScreen(onCreate: (String) -> Unit) {
     val screenType = ScreenType.CREATE_TIMELAPSE
-    Screen(screenType = screenType, onDismiss = onDismiss) {
+    Screen(screenType = screenType) {
 
         val focusManager = LocalFocusManager.current
 
@@ -55,5 +55,5 @@ fun CreateTimelapseScreen(onCreate: (String) -> Unit, onDismiss: () -> Unit) {
 @Preview
 @Composable
 private fun CreateTimelapseScreenPreview() {
-    CreateTimelapseScreen(onCreate = {}, onDismiss = {})
+    CreateTimelapseScreen(onCreate = {})
 }

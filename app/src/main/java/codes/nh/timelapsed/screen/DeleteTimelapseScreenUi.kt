@@ -12,9 +12,9 @@ import codes.nh.timelapsed.timelapse.Timelapse
 import codes.nh.timelapsed.utils.getTestTimelapses
 
 @Composable
-fun DeleteTimelapseScreen(timelapse: Timelapse, onDelete: () -> Unit, onDismiss: () -> Unit) {
+fun DeleteTimelapseScreen(timelapse: Timelapse, onDelete: () -> Unit) {
     val screenType = ScreenType.DELETE_TIMELAPSE
-    Screen(screenType = screenType, onDismiss = onDismiss) {
+    Screen(screenType = screenType) {
 
         Text(
             text = "Really delete timelapse ${timelapse.directory.name} and all its pictures?",
@@ -35,5 +35,5 @@ fun DeleteTimelapseScreen(timelapse: Timelapse, onDelete: () -> Unit, onDismiss:
 @Preview
 @Composable
 private fun DeleteTimelapseScreenPreview() {
-    DeleteTimelapseScreen(timelapse = getTestTimelapses().first(), onDelete = {}, onDismiss = {})
+    DeleteTimelapseScreen(timelapse = getTestTimelapses().first(), onDelete = {})
 }

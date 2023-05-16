@@ -16,9 +16,9 @@ import codes.nh.timelapsed.utils.AsyncImage
 import codes.nh.timelapsed.utils.getTestTimelapses
 
 @Composable
-fun PreviewTimelapseScreen(timelapse: Timelapse, onDismiss: () -> Unit) {
+fun PreviewTimelapseScreen(timelapse: Timelapse) {
     val screenType = ScreenType.PREVIEW_TIMELAPSE
-    Screen(screenType = screenType, onDismiss = onDismiss) {
+    Screen(screenType = screenType) {
 
         if (timelapse.entries.isEmpty()) {
             Text(
@@ -48,5 +48,5 @@ fun PreviewTimelapseScreen(timelapse: Timelapse, onDismiss: () -> Unit) {
 @Preview
 @Composable
 private fun PreviewTimelapseScreenPreview() {
-    PreviewTimelapseScreen(timelapse = getTestTimelapses().first(), onDismiss = {})
+    PreviewTimelapseScreen(timelapse = getTestTimelapses().first())
 }

@@ -25,9 +25,9 @@ import codes.nh.timelapsed.camera.CameraManager
 import codes.nh.timelapsed.utils.log
 
 @Composable
-fun StartTimelapseScreen(onStart: (Long) -> Unit, onDismiss: () -> Unit) {
+fun StartTimelapseScreen(onStart: (Long) -> Unit) {
     val screenType = ScreenType.START_TIMELAPSE
-    Screen(screenType = screenType, onDismiss = onDismiss) {
+    Screen(screenType = screenType) {
         Box {
 
             val activity = LocalContext.current as ComponentActivity
@@ -160,5 +160,5 @@ private fun IntervalSelector(
 @Preview
 @Composable
 private fun StartTimelapseScreenPreview() { //todo fix if possible
-    StartTimelapseScreen(onStart = {}, onDismiss = {})
+    StartTimelapseScreen(onStart = {})
 }

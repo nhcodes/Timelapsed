@@ -10,9 +10,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun StopTimelapseScreen(onStop: () -> Unit, onDismiss: () -> Unit) {
+fun StopTimelapseScreen(onStop: () -> Unit) {
     val screenType = ScreenType.STOP_TIMELAPSE
-    Screen(screenType = screenType, onDismiss = onDismiss) {
+    Screen(screenType = screenType) {
 
         Text(
             text = "Currently there is a timelapse running.",
@@ -33,5 +33,5 @@ fun StopTimelapseScreen(onStop: () -> Unit, onDismiss: () -> Unit) {
 @Preview
 @Composable
 private fun StopTimelapseScreenPreview() {
-    StopTimelapseScreen(onStop = {}, onDismiss = {})
+    StopTimelapseScreen(onStop = {})
 }

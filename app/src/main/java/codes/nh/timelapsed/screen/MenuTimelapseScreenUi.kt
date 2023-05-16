@@ -18,11 +18,10 @@ import codes.nh.timelapsed.utils.getTestTimelapses
 @Composable
 fun MenuTimelapseScreen(
     timelapse: Timelapse,
-    onClickScreen: (ScreenType) -> Unit,
-    onDismiss: () -> Unit
+    onClickScreen: (ScreenType) -> Unit
 ) {
     val screenType = ScreenType.MENU_TIMELAPSE
-    Screen(screenType = screenType, onDismiss = onDismiss) {
+    Screen(screenType = screenType) {
 
         Text(
             text = "What to do with timelapse ${timelapse.directory.name}?",
@@ -63,5 +62,5 @@ fun MenuTimelapseScreen(
 @Preview
 @Composable
 private fun MenuTimelapseScreenPreview() {
-    MenuTimelapseScreen(timelapse = getTestTimelapses().first(), onClickScreen = {}, onDismiss = {})
+    MenuTimelapseScreen(timelapse = getTestTimelapses().first(), onClickScreen = {})
 }
