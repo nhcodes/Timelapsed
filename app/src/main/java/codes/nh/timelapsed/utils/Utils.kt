@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.UUID
 
-fun log(message: Any) {
+fun log(message: Any?) {
     Log.e("Timelapsed", "$message")
 }
 
