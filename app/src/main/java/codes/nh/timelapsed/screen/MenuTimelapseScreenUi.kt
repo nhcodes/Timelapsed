@@ -24,7 +24,7 @@ fun MenuTimelapseScreen(
     Screen(screenType = screenType) {
 
         Text(
-            text = "What to do with timelapse ${timelapse.directory.name}?",
+            text = "What to do with timelapse ${timelapse.name}?",
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(8.dp)
         )

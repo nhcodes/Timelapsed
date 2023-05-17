@@ -17,7 +17,7 @@ fun DeleteTimelapseScreen(timelapse: Timelapse, onDelete: () -> Unit) {
     Screen(screenType = screenType) {
 
         Text(
-            text = "Really delete timelapse ${timelapse.directory.name} and all its pictures?",
+            text = "Really delete timelapse ${timelapse.name} and all its pictures?",
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(8.dp)
         )

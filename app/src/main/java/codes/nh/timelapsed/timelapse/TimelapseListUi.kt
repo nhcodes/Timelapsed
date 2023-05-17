@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import codes.nh.timelapsed.image.AsyncImage
 import codes.nh.timelapsed.utils.getTestTimelapses
+import codes.nh.timelapsed.utils.getTimeString
 
 @Composable
 fun TimelapseList(
@@ -99,7 +100,7 @@ private fun TimelapseCard(
             ) {
 
                 Text(
-                    text = timelapse.directory.name,
+                    text = timelapse.name,
                     style = MaterialTheme.typography.titleLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -115,9 +116,12 @@ private fun TimelapseCard(
                     modifier = Modifier.alpha(0.5f)
                 )
 
-                val lastEntryName = lastEntry?.file?.name ?: "/"
+                val lastModified = lastEntry?.lastModified?.let { timestamp ->
+                    //todo use local time format?
+                    getTimeString(timestamp = timestamp, format = "yyyy/MM/dd HH:mm:ss")
+                } ?: "/"
                 Text(
-                    text = "Last: $lastEntryName",
+                    text = "Last: $lastModified",
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

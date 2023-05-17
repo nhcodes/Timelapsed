@@ -21,7 +21,7 @@ class TimelapseManager(context: Context) {
             .listFiles()
             ?.filter { file -> file.isDirectory }
             ?.map { directory -> getTimelapseFromDirectory(directory) }
-            ?.sortedByDescending { timelapse -> timelapse.entries.firstOrNull()?.file?.name }
+            ?.sortedByDescending { timelapse -> timelapse.entries.firstOrNull()?.name }
             ?: emptyList()
     }
 
@@ -30,7 +30,7 @@ class TimelapseManager(context: Context) {
             .listFiles()
             ?.filter { file -> file.isFile }
             ?.map { file -> TimelapseEntry(file) }
-            ?.sortedByDescending { entry -> entry.file.name }
+            ?.sortedByDescending { entry -> entry.name }
             ?: emptyList()
         Timelapse(directory, entries)
     }

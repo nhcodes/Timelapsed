@@ -198,7 +198,7 @@ private fun BottomSheetScreens(
                             coroutineScope.launch { screenState.closeScreen() }
                             coroutineScope.launch {
                                 val success = timelapseViewModel.deleteTimelapse(timelapse)
-                                val name = timelapse.directory.name
+                                val name = timelapse.name
                                 val message = if (success) "Timelapse $name deleted"
                                 else "Error while deleting timelapse $name"
                                 popupMessageState.showMessage(message)
@@ -213,7 +213,7 @@ private fun BottomSheetScreens(
                         onStart = { interval ->
                             coroutineScope.launch { screenState.closeScreen() }
                             timelapseViewModel.startTimelapse(timelapse, interval)
-                            val name = timelapse.directory.name
+                            val name = timelapse.name
                             coroutineScope.launch {
                                 popupMessageState.showMessage("Timelapse $name started ($interval seconds)")
                             }
@@ -247,7 +247,7 @@ private fun BottomSheetScreens(
                         timelapse = timelapse,
                         onExport = { success ->
                             mainViewModel.closeScreen()
-                            val name = timelapse.directory.name
+                            val name = timelapse.name
                             val message = if (success)
                                 "Timelapse $name successfully exported"
                             else "Timelapse $name could not be exported"

@@ -12,7 +12,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainTheme {
                 Main()
-                //Test()
             }
         }
     }

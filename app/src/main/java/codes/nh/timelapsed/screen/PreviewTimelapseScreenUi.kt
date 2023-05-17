@@ -34,7 +34,7 @@ fun PreviewTimelapseScreen(timelapse: Timelapse) {
 
                 AsyncImage(
                     file = entry.file,
-                    contentDescription = entry.file.name,
+                    contentDescription = entry.name,
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier.fillMaxWidth()
                 )

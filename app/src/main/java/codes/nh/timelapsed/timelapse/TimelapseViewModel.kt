@@ -54,7 +54,7 @@ class TimelapseViewModel(application: Application) : AndroidViewModel(applicatio
     fun startTimelapse(timelapse: Timelapse, intervalSeconds: Long) {
         val repeatingActivity = RepeatingActivity(
             CameraActivity::class.java,
-            Bundle().apply { putString(TIMELAPSE_NAME_KEY, timelapse.directory.name) },
+            Bundle().apply { putString(TIMELAPSE_NAME_KEY, timelapse.name) },
             intervalSeconds
         )
         repeatingActivity.start(getApplication())
