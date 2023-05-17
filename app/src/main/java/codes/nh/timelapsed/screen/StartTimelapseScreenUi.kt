@@ -1,27 +1,31 @@
 package codes.nh.timelapsed.screen
 
-import android.view.ViewGroup
-import android.widget.NumberPicker
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import codes.nh.timelapsed.camera.CameraManager
+import codes.nh.timelapsed.picker.Picker
+import codes.nh.timelapsed.picker.PickerState
+import codes.nh.timelapsed.picker.rememberPickerState
 import codes.nh.timelapsed.utils.log
 
 @Composable
@@ -67,31 +71,54 @@ fun StartTimelapseScreen(onStart: (Long) -> Unit) {
                     modifier = Modifier.padding(8.dp)
                 )
 
-                val interval = remember { mutableStateOf(60L) }
+                val valuesPickerState = rememberPickerState()
+                val unitsPickerState = rememberPickerState()
+
+                val units = remember {
+                    linkedMapOf(
+                        "seconds" to 1L,
+                        "minutes" to 60L,
+                        "hours" to 3600L,
+                        "days" to 86400L,
+                    )
+                }
 
                 IntervalSelector(
-                    onSelect = { seconds ->
-                        interval.value = seconds
-                    }
+                    valuesPickerState = valuesPickerState,
+                    unitsPickerState = unitsPickerState,
+                    values = (1..99).map { it.toString() },
+                    defaultValue = 0, //1
+                    units = units.keys.toList(),
+                    defaultUnit = 1, //minutes
+                    modifier = Modifier.fillMaxWidth()
                 )
 
-                if (interval.value < 5L) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(75.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    val intervalSeconds = (valuesPickerState.selectedItem.toLongOrNull() ?: 0) *
+                            (units[unitsPickerState.selectedItem] ?: 0)
+                    if (intervalSeconds < 5L) {
 
-                    Text(
-                        text = "The interval needs to be at least 5 seconds",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(16.dp)
-                    )
+                        Text(
+                            text = "The interval needs to be at least 5 seconds",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(16.dp)
+                        )
 
-                } else {
+                    } else {
 
-                    OutlinedButton(
-                        onClick = { onStart(interval.value) },
-                        modifier = Modifier.padding(8.dp)
-                    ) {
-                        Text(text = screenType.action)
+                        OutlinedButton(
+                            onClick = { onStart(intervalSeconds) },
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            Text(text = screenType.action)
+                        }
+
                     }
-
                 }
 
             }
@@ -100,6 +127,39 @@ fun StartTimelapseScreen(onStart: (Long) -> Unit) {
     }
 }
 
+@Composable
+private fun IntervalSelector(
+    valuesPickerState: PickerState,
+    unitsPickerState: PickerState,
+    values: List<String>,
+    defaultValue: Int,
+    units: List<String>,
+    defaultUnit: Int,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier = modifier) {
+        Picker(
+            state = valuesPickerState,
+            items = values,
+            visibleItemsCount = 3,
+            startIndex = defaultValue,
+            modifier = Modifier.weight(0.3f),
+            textModifier = Modifier.padding(8.dp),
+            textStyle = TextStyle(fontSize = 24.sp)
+        )
+        Picker(
+            state = unitsPickerState,
+            items = units,
+            visibleItemsCount = 3,
+            startIndex = defaultUnit,
+            modifier = Modifier.weight(0.7f),
+            textModifier = Modifier.padding(8.dp),
+            textStyle = TextStyle(fontSize = 24.sp)
+        )
+    }
+}
+
+/*
 @Composable
 private fun IntervalSelector(
     onSelect: (Long) -> Unit,
@@ -156,6 +216,7 @@ private fun IntervalSelector(
 
     }
 }
+*/
 
 @Preview
 @Composable
