@@ -24,9 +24,11 @@ fun AsyncImage(
     contentDescription: String?,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
-    sampleSize: Int = 4
+    sampleSize: Int = 4,
+    resetIfFileChanges: Boolean = true
 ) {
-    val image = remember(file) { mutableStateOf(null as ImageBitmap?) }
+    val image = if (resetIfFileChanges) remember(file) { mutableStateOf(null as ImageBitmap?) }
+    else remember { mutableStateOf(null as ImageBitmap?) }
     if (file != null) {
         LaunchedEffect(file) {
             image.value = imageLoader.load(file, sampleSize).asImageBitmap()
