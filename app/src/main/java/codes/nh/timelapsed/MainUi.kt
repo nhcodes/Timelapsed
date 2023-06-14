@@ -28,6 +28,7 @@ import codes.nh.timelapsed.popup.PopupMessageState
 import codes.nh.timelapsed.popup.rememberPopupMessageState
 import codes.nh.timelapsed.screen.CreateTimelapseScreen
 import codes.nh.timelapsed.screen.DeleteTimelapseScreen
+import codes.nh.timelapsed.screen.ExportTimelapseScreen
 import codes.nh.timelapsed.screen.MenuTimelapseScreen
 import codes.nh.timelapsed.screen.PreviewTimelapseScreen
 import codes.nh.timelapsed.screen.Screen
@@ -229,6 +230,7 @@ private fun BottomSheetScreens(
                             coroutineScope.launch {
                                 popupMessageState.showMessage("Timelapse stopped")
                             }
+                            //todo reload timelapses
                         }
                     )
                 }
@@ -241,19 +243,20 @@ private fun BottomSheetScreens(
                 }
 
                 ScreenType.EXPORT_TIMELAPSE -> {
-                    Text("EXPORT_TIMELAPSE")
-                    /*val timelapse = screen.data as Timelapse
+                    val timelapse = screen.data as Timelapse
                     ExportTimelapseScreen(
                         timelapse = timelapse,
-                        onExport = { success ->
-                            mainViewModel.closeScreen()
-                            val name = timelapse.name
-                            val message = if (success)
-                                "Timelapse $name successfully exported"
-                            else "Timelapse $name could not be exported"
-                            mainViewModel.showSnackbar(message)
+                        onExport = { file ->
+                            coroutineScope.launch { screenState.closeScreen() }
+                            coroutineScope.launch {
+                                val message = if (file != null)
+                                    "Successfully exported ${timelapse.name} to ${file.path}"
+                                else
+                                    "Error while exporting ${timelapse.name}"
+                                popupMessageState.showMessage(message)
+                            }
                         }
-                    )*/
+                    )
                 }
 
             }
