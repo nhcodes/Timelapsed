@@ -14,7 +14,7 @@ class TimelapseManager(context: Context) {
 
     private val picturesDirectory =
         context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: context.filesDir
-    private val timelapsesDirectory = File(picturesDirectory, context.getString(R.string.app_name))
+    private val timelapsesDirectory = File(picturesDirectory, "timelapses")
 
     suspend fun getTimelapses() = withContext(dispatcher) {
         timelapsesDirectory
