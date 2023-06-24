@@ -14,6 +14,8 @@ import java.util.zip.ZipOutputStream
 
 class ExportManager {
 
+    //todo MediaScannerConnection.scanFile
+
     private val dispatcher = Dispatchers.IO
 
     private val moviesDirectory =
@@ -26,8 +28,8 @@ class ExportManager {
 
     suspend fun exportAsVideo(
         timelapse: Timelapse,
-        videoWidth: Int ,
-        videoHeight: Int ,
+        videoWidth: Int,
+        videoHeight: Int,
         videoFrameRate: Int,
     ): File? = withContext(dispatcher) {
         try {
@@ -39,16 +41,16 @@ class ExportManager {
             val images = timelapse.entries.map { it.file }
 
             moviesDirectory.mkdirs()
-            val fileName = "timelapse_${getTimeString(format = "yyyy_MM_dd_HH_mm_ss")}.avi"
-            val outputFile = File(moviesDirectory, fileName) //todo scan
+            val fileName = "${getExportedTimelapseName()}.avi"
+            val outputFile = File(moviesDirectory, fileName)
 
-            val mjpegGenerator =
-                MJPEGGenerator(outputFile, videoWidth, videoHeight, videoFrameRate.toDouble(), images.size)
+            val imagesToVideo =
+                ImagesToVideo(outputFile, videoWidth, videoHeight, videoFrameRate, images.size)
             images.forEachIndexed { i, file ->
-                mjpegGenerator.addImage(file.readBytes())
+                imagesToVideo.addImage(file.readBytes())
                 progressState.value = (i + 1f) / images.size
             }
-            mjpegGenerator.finishAVI()
+            imagesToVideo.finish()
 
             val time = System.currentTimeMillis() - startTime
             log("finished in $time ms")
@@ -71,8 +73,8 @@ class ExportManager {
             val images = timelapse.entries.map { it.file }
 
             documentsDirectory.mkdirs()
-            val fileName = "timelapse_${getTimeString(format = "yyyy_MM_dd_HH_mm_ss")}.zip"
-            val outputFile = File(documentsDirectory, fileName) //todo scan
+            val fileName = "${getExportedTimelapseName()}.zip"
+            val outputFile = File(documentsDirectory, fileName)
 
             ZipOutputStream(outputFile.outputStream()).use { out ->
                 images.sortedBy { it.name }.forEachIndexed { i, image ->
@@ -89,9 +91,12 @@ class ExportManager {
             return@withContext outputFile
 
         } catch (e: Exception) {
-            log("error while generating zip: ${e.message}")
+            log("error while exporting images (zip): ${e.message}")
         }
         return@withContext null
     }
+
+    private fun getExportedTimelapseName() =
+        "timelapse_${getTimeString(format = "yyyy_MM_dd_HH_mm_ss")}"
 
 }
