@@ -1,8 +1,10 @@
 package codes.nh.timelapsed.camera
 
+import android.util.Size
 import androidx.activity.ComponentActivity
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
+import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
@@ -17,7 +19,15 @@ class CameraManager(private val activity: ComponentActivity) {
 
     private val controller = LifecycleCameraController(activity)
 
-    fun startCamera(readyListener: () -> Unit = {}) {
+    fun startCamera(resolution: Int? = null, readyListener: () -> Unit = {}) {
+        //controller.imageCaptureMode = ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
+
+        if (resolution != null) {
+            val outputSize = CameraController.OutputSize(Size(resolution, resolution)) //todo
+            controller.previewTargetSize = outputSize
+            controller.imageCaptureTargetSize = outputSize
+        }
+
         controller.bindToLifecycle(activity)
         previewView.controller = controller
 
