@@ -11,6 +11,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -21,12 +22,73 @@ https://google.github.io/accompanist/systemuicontroller/
 
 //color
 
-private val darkColorScheme = darkColorScheme(
+val primaryColor = Color(0xFFD4AF37)
+val onPrimaryColor = Color(0xFF000000)
+val missingColor = Color(0xFFFF0000)
+val highlightColor = Color(0xFF00FF00)
 
+private val darkColorScheme = darkColorScheme(
+    primary = primaryColor,
+    onPrimary = onPrimaryColor,
+    primaryContainer = primaryColor,
+    onPrimaryContainer = onPrimaryColor,
+    inversePrimary = missingColor,
+    secondary = primaryColor,
+    onSecondary = onPrimaryColor,
+    secondaryContainer = primaryColor,
+    onSecondaryContainer = onPrimaryColor,
+    tertiary = primaryColor,
+    onTertiary = onPrimaryColor,
+    tertiaryContainer = primaryColor,
+    onTertiaryContainer = onPrimaryColor,
+    background = Color(0xFF171717),
+    //onBackground = missingColor,
+    surface = Color(0xFF202124),
+    //onSurface = missingColor,
+    //surfaceVariant = missingColor,
+    //onSurfaceVariant = missingColor,
+    surfaceTint = Color.Transparent,
+    inverseSurface = missingColor,
+    inverseOnSurface = missingColor,
+    error = missingColor,
+    onError = missingColor,
+    errorContainer = missingColor,
+    onErrorContainer = missingColor,
+    //outline = missingColor,
+    //outlineVariant = missingColor,
+    //scrim = missingColor,
 )
 
 private val lightColorScheme = lightColorScheme(
-
+    primary = primaryColor,
+    onPrimary = onPrimaryColor,
+    primaryContainer = primaryColor,
+    onPrimaryContainer = onPrimaryColor,
+    inversePrimary = missingColor,
+    secondary = primaryColor,
+    onSecondary = onPrimaryColor,
+    secondaryContainer = primaryColor,
+    onSecondaryContainer = onPrimaryColor,
+    tertiary = primaryColor,
+    onTertiary = onPrimaryColor,
+    tertiaryContainer = primaryColor,
+    onTertiaryContainer = onPrimaryColor,
+    //background = Color(0xFF171717),
+    //onBackground = missingColor,
+    //surface = Color(0xFF202124),
+    //onSurface = missingColor,
+    //surfaceVariant = missingColor,
+    //onSurfaceVariant = missingColor,
+    surfaceTint = Color.Transparent,
+    inverseSurface = missingColor,
+    inverseOnSurface = missingColor,
+    error = missingColor,
+    onError = missingColor,
+    errorContainer = missingColor,
+    onErrorContainer = missingColor,
+    //outline = missingColor,
+    //outlineVariant = missingColor,
+    //scrim = missingColor,
 )
 
 //typography
@@ -40,7 +102,7 @@ const val SYSTEM_BARS_ELEVATION = 2
 @Composable
 fun MainTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
 

@@ -1,22 +1,28 @@
 package codes.nh.timelapsed
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -44,91 +50,90 @@ import codes.nh.timelapsed.timelapse.TimelapseViewModel
 import codes.nh.timelapsed.utils.log
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun Main(timelapseViewModel: TimelapseViewModel = viewModel()) {
-    Surface {
-        Column(modifier = Modifier.fillMaxSize()) {
+    Background(modifier = Modifier.fillMaxSize()) {
 
-            val coroutineScope = rememberCoroutineScope()
-            val screenState = rememberScreenState()
-            val popupMessageState = rememberPopupMessageState()
+        val coroutineScope = rememberCoroutineScope()
+        val screenState = rememberScreenState()
+        val popupMessageState = rememberPopupMessageState()
 
-            TopAppBar()
+        TopAppBar()
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
 
-                LaunchedEffect(timelapseViewModel) {
-                    timelapseViewModel.loadTimelapseList()
-                    log("loaded timelapses")
-                }
-
-                TimelapseList(
-                    timelapseList = timelapseViewModel.getTimelapseList(),
-                    isTimelapseListLoaded = timelapseViewModel.isTimelapseListLoaded(),
-                    onClickTimelapse = { timelapse ->
-                        coroutineScope.launch {
-                            screenState.openScreen(Screen(ScreenType.MENU_TIMELAPSE, timelapse))
-                        }
-                    },
-                    modifier = Modifier.fillMaxSize()
-                )
-
-                BottomSheetScreens(
-                    timelapseViewModel = timelapseViewModel,
-                    screenState = screenState,
-                    popupMessageState = popupMessageState
-                )
-
-                if (timelapseViewModel.isTimelapseStarted()) {
-                    FloatingActionButton(
-                        onClick = {
-                            coroutineScope.launch {
-                                screenState.openScreen(Screen(ScreenType.STOP_TIMELAPSE))
-                            }
-                        },
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(16.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.icon_stop),
-                            contentDescription = "icon_stop"
-                        )
-                    }
-                } else {
-                    FloatingActionButton(
-                        onClick = {
-                            coroutineScope.launch {
-                                screenState.openScreen(Screen(ScreenType.CREATE_TIMELAPSE))
-                            }
-                        },
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(16.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.icon_create),
-                            contentDescription = "icon_create"
-                        )
-                    }
-                }
-
-                PermissionDialog()
-
-                PopupMessage(
-                    state = popupMessageState,
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(8.dp)
-                )
-
+            LaunchedEffect(timelapseViewModel) {
+                timelapseViewModel.loadTimelapseList()
+                log("loaded timelapses")
             }
 
+            TimelapseList(
+                timelapseList = timelapseViewModel.getTimelapseList(),
+                isTimelapseListLoaded = timelapseViewModel.isTimelapseListLoaded(),
+                onClickTimelapse = { timelapse ->
+                    coroutineScope.launch {
+                        screenState.openScreen(Screen(ScreenType.MENU_TIMELAPSE, timelapse))
+                    }
+                },
+                modifier = Modifier.fillMaxSize()
+            )
+
+            BottomSheetScreens(
+                timelapseViewModel = timelapseViewModel,
+                screenState = screenState,
+                popupMessageState = popupMessageState
+            )
+
+            if (timelapseViewModel.isTimelapseStarted()) {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            screenState.openScreen(Screen(ScreenType.STOP_TIMELAPSE))
+                        }
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_stop),
+                        contentDescription = "icon_stop"
+                    )
+                }
+            } else {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            screenState.openScreen(Screen(ScreenType.CREATE_TIMELAPSE))
+                        }
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_create),
+                        contentDescription = "icon_create"
+                    )
+                }
+            }
+
+            PermissionDialog()
+
+            PopupMessage(
+                state = popupMessageState,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(8.dp)
+            )
+
         }
+
     }
 }
 
@@ -261,5 +266,21 @@ private fun BottomSheetScreens(
 
             }
         }
+    }
+}
+
+@Composable
+fun Background(
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.background,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    CompositionLocalProvider(
+        LocalContentColor provides contentColorFor(color),
+    ) {
+        Column(
+            modifier = modifier.background(color),
+            content = content
+        )
     }
 }
