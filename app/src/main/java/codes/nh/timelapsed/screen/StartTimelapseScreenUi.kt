@@ -8,13 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -54,73 +57,77 @@ fun StartTimelapseScreen(onStart: (Long) -> Unit) {
                 modifier = Modifier.fillMaxSize()
             )
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.align(Alignment.BottomCenter)
+            CompositionLocalProvider(
+                LocalContentColor provides Color.White,
             ) {
-
-                Text(
-                    text = "Select an interval, position your phone and click start.",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 32.dp)
-                )
-
-                Text(
-                    text = "Take a picture every",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(8.dp)
-                )
-
-                val valuesPickerState = rememberPickerState()
-                val unitsPickerState = rememberPickerState()
-
-                val units = remember {
-                    linkedMapOf(
-                        "seconds" to 1L,
-                        "minutes" to 60L,
-                        "hours" to 3600L,
-                        "days" to 86400L,
-                    )
-                }
-
-                IntervalSelector(
-                    valuesPickerState = valuesPickerState,
-                    unitsPickerState = unitsPickerState,
-                    values = (1..99).map { it.toString() },
-                    defaultValue = 0, //1
-                    units = units.keys.toList(),
-                    defaultUnit = 1, //minutes
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(75.dp),
-                    contentAlignment = Alignment.Center
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.align(Alignment.BottomCenter)
                 ) {
-                    val intervalSeconds = (valuesPickerState.selectedItem.toLongOrNull() ?: 0) *
-                            (units[unitsPickerState.selectedItem] ?: 0)
-                    if (intervalSeconds < 5L) {
 
-                        Text(
-                            text = "The interval needs to be at least 5 seconds",
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(16.dp)
+                    Text(
+                        text = "Select an interval, position your phone and click start.",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 32.dp)
+                    )
+
+                    Text(
+                        text = "Take a picture every",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(8.dp)
+                    )
+
+                    val valuesPickerState = rememberPickerState()
+                    val unitsPickerState = rememberPickerState()
+
+                    val units = remember {
+                        linkedMapOf(
+                            "seconds" to 1L,
+                            "minutes" to 60L,
+                            "hours" to 3600L,
+                            "days" to 86400L,
                         )
-
-                    } else {
-
-                        OutlinedButton(
-                            onClick = { onStart(intervalSeconds) },
-                            modifier = Modifier.padding(8.dp)
-                        ) {
-                            Text(text = screenType.action)
-                        }
-
                     }
-                }
 
+                    IntervalSelector(
+                        valuesPickerState = valuesPickerState,
+                        unitsPickerState = unitsPickerState,
+                        values = (1..99).map { it.toString() },
+                        defaultValue = 0, //1
+                        units = units.keys.toList(),
+                        defaultUnit = 1, //minutes
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(75.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        val intervalSeconds = (valuesPickerState.selectedItem.toLongOrNull() ?: 0) *
+                                (units[unitsPickerState.selectedItem] ?: 0)
+                        if (intervalSeconds < 5L) {
+
+                            Text(
+                                text = "The interval needs to be at least 5 seconds",
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(16.dp)
+                            )
+
+                        } else {
+
+                            OutlinedButton(
+                                onClick = { onStart(intervalSeconds) },
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+                                Text(text = screenType.action)
+                            }
+
+                        }
+                    }
+
+                }
             }
 
         }
