@@ -103,6 +103,7 @@ fun ExportTimelapseScreen(timelapse: Timelapse, onExport: (File?) -> Unit) {
                     onExport(file)
                 }
             },
+            enabled = exportManager.progressState.value == 0f,
             modifier = Modifier.padding(8.dp)
         ) {
             Text(text = "Export as video")
@@ -121,6 +122,7 @@ fun ExportTimelapseScreen(timelapse: Timelapse, onExport: (File?) -> Unit) {
                     onExport(file)
                 }
             },
+            enabled = exportManager.progressState.value == 0f,
             modifier = Modifier.padding(8.dp)
         ) {
             Text(text = "Export as zip")
