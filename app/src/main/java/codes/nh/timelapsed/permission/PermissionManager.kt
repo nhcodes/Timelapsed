@@ -26,24 +26,27 @@ class PermissionManager(private val activity: ComponentActivity) {
 
     private val allPermissions = arrayOf(
         Permission(
-            android.Manifest.permission.CAMERA,
-            "To take pictures"
+            name = android.Manifest.permission.CAMERA,
+            description = "To take pictures",
         ),
         Permission(
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            "To save pictures"
+            name = android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            description = "To save pictures",
+            required = { it < Build.VERSION_CODES.R }
         ),
         SpecialPermission(
-            android.Manifest.permission.SCHEDULE_EXACT_ALARM,
-            "To take pictures at a specific interval",
-            { hasExactAlarmPermission() },
-            Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+            name = android.Manifest.permission.SCHEDULE_EXACT_ALARM,
+            description = "To take pictures at a specific interval",
+            required = { it >= Build.VERSION_CODES.S },
+            checkGranted = { hasExactAlarmPermission() },
+            requestAction = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
         ),
         SpecialPermission(
-            android.Manifest.permission.SYSTEM_ALERT_WINDOW,
-            "To open the camera from the background",
-            { hasOverlayPermission() },
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION
+            name = android.Manifest.permission.SYSTEM_ALERT_WINDOW,
+            description = "To open the camera from the background",
+            required = { it >= Build.VERSION_CODES.Q },
+            checkGranted = { hasOverlayPermission() },
+            requestAction = Settings.ACTION_MANAGE_OVERLAY_PERMISSION
         )
     )
 
@@ -102,11 +105,11 @@ class PermissionManager(private val activity: ComponentActivity) {
 
     private fun hasExactAlarmPermission(): Boolean {
         val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarmManager.canScheduleExactAlarms()
+        return alarmManager.canScheduleExactAlarms()
     }
 
     private fun hasOverlayPermission(): Boolean {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Settings.canDrawOverlays(activity)
+        return Settings.canDrawOverlays(activity)
     }
 
 }
