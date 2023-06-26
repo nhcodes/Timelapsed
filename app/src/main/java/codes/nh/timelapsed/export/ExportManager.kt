@@ -8,6 +8,7 @@ import codes.nh.timelapsed.utils.log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.zip.Deflater
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -77,6 +78,7 @@ class ExportManager {
             val outputFile = File(documentsDirectory, fileName)
 
             ZipOutputStream(outputFile.outputStream()).use { out ->
+                out.setLevel(Deflater.NO_COMPRESSION)
                 images.sortedBy { it.name }.forEachIndexed { i, image ->
                     val zipEntry = ZipEntry(image.name)
                     out.putNextEntry(zipEntry)
