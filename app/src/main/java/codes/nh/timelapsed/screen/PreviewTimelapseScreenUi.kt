@@ -45,6 +45,7 @@ fun PreviewTimelapseScreen(timelapse: Timelapse) {
                 file = entry.file,
                 contentDescription = entry.name,
                 contentScale = ContentScale.FillWidth,
+                sampleSize = 8,
                 resetIfFileChanges = false,
                 modifier = Modifier.fillMaxSize()
             )
