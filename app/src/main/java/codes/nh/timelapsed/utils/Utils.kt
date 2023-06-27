@@ -8,6 +8,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import codes.nh.timelapsed.permission.Permission
 import codes.nh.timelapsed.timelapse.Timelapse
 import java.io.File
@@ -64,4 +69,19 @@ fun getTestPermissions(): List<Permission> {
             "Lorem ipsum this is a test with a longer description lorem ipsum aaaaaaaaaaaaaa"
         ),
     )
+}
+
+//https://developer.android.com/jetpack/compose/side-effects#disposableeffect
+@Composable
+fun LifecycleListener(onChange: (Lifecycle.Event) -> Unit) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            onChange(event)
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 }

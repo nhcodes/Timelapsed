@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import codes.nh.timelapsed.permission.PermissionDialog
 import codes.nh.timelapsed.popup.PopupMessage
@@ -47,6 +47,7 @@ import codes.nh.timelapsed.theme.SYSTEM_BARS_ELEVATION
 import codes.nh.timelapsed.timelapse.Timelapse
 import codes.nh.timelapsed.timelapse.TimelapseList
 import codes.nh.timelapsed.timelapse.TimelapseViewModel
+import codes.nh.timelapsed.utils.LifecycleListener
 import codes.nh.timelapsed.utils.log
 import kotlinx.coroutines.launch
 
@@ -59,6 +60,13 @@ fun Main(timelapseViewModel: TimelapseViewModel = viewModel()) {
         val screenState = rememberScreenState()
         val popupMessageState = rememberPopupMessageState()
 
+        LifecycleListener { event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                timelapseViewModel.loadTimelapseList()
+                log("loaded timelapses")
+            }
+        }
+
         TopAppBar()
 
         Box(
@@ -66,11 +74,6 @@ fun Main(timelapseViewModel: TimelapseViewModel = viewModel()) {
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-
-            LaunchedEffect(timelapseViewModel) {
-                timelapseViewModel.loadTimelapseList()
-                log("loaded timelapses")
-            }
 
             TimelapseList(
                 timelapseList = timelapseViewModel.getTimelapseList(),

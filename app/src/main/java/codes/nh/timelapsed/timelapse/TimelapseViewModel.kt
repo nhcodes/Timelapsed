@@ -24,6 +24,7 @@ class TimelapseViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun loadTimelapseList() {
         viewModelScope.launch {
+            timelapseListState.clear()
             timelapseListState.addAll(timelapseManager.getTimelapses())
             timelapseListLoadedState.value = true
         }
